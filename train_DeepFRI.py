@@ -18,7 +18,7 @@ if __name__ == "__main__":
     parser.add_argument('-drop', '--dropout', type=float, default=0.3, help="Dropout rate.")
     parser.add_argument('-l2', '--l2_reg', type=float, default=1e-4, help="L2 regularization coefficient.")
     parser.add_argument('-lr', type=float, default=0.0002, help="Initial learning rate.")
-    parser.add_argument('-gc', '--gc_layer', type=str, choices=['GraphConv', 'MultiGraphConv', 'SAGEConv', 'ChebConv', 'GAT', 'NoGraphConv'],
+    parser.add_argument('-gc', '--gc_layer', type=str, choices=['GraphConv', 'GAT'],
                         help="Graph Conv layer.")
     parser.add_argument('-e', '--epochs', type=int, default=200, help="Number of epochs to train.")
     parser.add_argument('-bs', '--batch_size', type=int, default=64, help="Batch size.")
