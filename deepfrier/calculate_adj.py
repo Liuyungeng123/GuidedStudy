@@ -54,11 +54,12 @@ def calculate_block_adjacency_matrix(structure, filename,chain_id = 'A',chain_le
     return adjacency_matrix, non_adjacency_matrix, helix_matrix
 
 # 读取 PDB 文件
+path = '1a2y.pdb'
 parser = PDBParser(QUIET=True)
-structure = parser.get_structure('protein', '/data/1a2y.pdb')
+structure = parser.get_structure('protein', path)
 
 # 计算 block-adjacency matrix
-adjacency_matrix, non_adjacency_matrix, helix= calculate_block_adjacency_matrix(structure,'/data/1a2y.pdb')
+adjacency_matrix, non_adjacency_matrix, helix= calculate_block_adjacency_matrix(structure,path)
 
 # 打印结果
 print("Block-Adjacency Matrix:")
