@@ -3,7 +3,7 @@ import glob
 import numpy as np
 import tensorflow as tf
 from sklearn.metrics import average_precision_score
-
+from .pdb_utils import parse_pdb
 from Bio import SeqIO
 from Bio.PDB.PDBParser import PDBParser
 
@@ -12,6 +12,8 @@ def load_predicted_PDB(pdbfile):
     # Generate (diagonalized) C_alpha distance matrix from a pdbfile
     parser = PDBParser()
     structure = parser.get_structure(pdbfile.split('/')[-1].split('.')[0], pdbfile)
+    output = parse_pdb(pdbfile)
+    hotspot = output['hotspot']
     residues = [r for r in structure.get_residues()]
 
     # sequence from atom lines
@@ -25,7 +27,7 @@ def load_predicted_PDB(pdbfile):
             two = residues[y]["CA"].get_coord()
             distances[x, y] = np.linalg.norm(one-two)
 
-    return distances, seqs[0]
+    return distances, seqs[0], hotspot
 
 
 def load_FASTA(filename):
