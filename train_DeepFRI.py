@@ -28,8 +28,8 @@ if __name__ == "__main__":
     parser.add_argument('--cmap_type', type=str, default='ca', choices=['ca', 'cb'], help="Contact maps type.")
     parser.add_argument('--cmap_thresh', type=float, default=10.0, help="Distance cutoff for thresholding contact maps.")
     parser.add_argument('--model_name', type=str, default='GCN-PDB_MF', help="Name of the GCN model.")
-    parser.add_argument('--train_tfrecord_fn', type=str, default="/mnt/ceph/users/vgligorijevic/ContactMaps/TFRecords/PDB_GO_train", help="Train tfrecords.")
-    parser.add_argument('--valid_tfrecord_fn', type=str, default="/mnt/ceph/users/vgligorijevic/ContactMaps/TFRecords/PDB_GO_valid", help="Valid tfrecords.")
+    parser.add_argument('--train_tfrecord_fn', type=str, default="./TFRecords/PDB_GO_train", help="Train tfrecords.")
+    parser.add_argument('--valid_tfrecord_fn', type=str, default="./TFRecords/PDB_GO_valid", help="Valid tfrecords.")
     parser.add_argument('--annot_fn', type=str, default="./preprocessing/data/nrPDB-GO_2019.06.18_annot.tsv", help="File (*tsv) with GO term annotations.")
     parser.add_argument('--test_list', type=str, default="./preprocessing/data/nrPDB-GO_2019.06.18_test.csv", help="File with test PDB chains.")
 
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     Y_pred = []
     Y_true = []
     proteins = []
-    path = '/mnt/home/vgligorijevic/Projects/NewMethods/Contact_maps/DeepFRIer2/preprocessing/data/annot_pdb_chains_npz/'
+    path = './preprocessing/data/annot_pdb_chains_npz/'
     with open(args.test_list, mode='r') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         next(csv_reader, None)  # header
