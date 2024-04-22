@@ -27,6 +27,7 @@ if [ "$cmap_data" == MERGED ]; then
     cmap_data=*
 fi
 
+    # -lm ./trained_models/lstm_lm.hdf5 \
 echo $annot
 python train_DeepFRI.py \
     -gcd ${graph_conv_dims} \
@@ -36,7 +37,6 @@ python train_DeepFRI.py \
     -gc ${graph_conv_layer} \
     -e 50 \
     -ont ${ontology} \
-    -lm trained_models/lstm_lm.hdf5 \
     --cmap_type ca \
     --cmap_thresh ${cmap_thresh} \
     --train_tfrecord_fn ${data_dir}${cmap_data}_${annot}_train \

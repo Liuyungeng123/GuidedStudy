@@ -424,3 +424,26 @@ class SumPooling(tf.keras.layers.Layer):
             'axis': self.axis,
         })
         return config
+
+
+class SAGPooling(tf.keras.layers.Layer):
+    def __init__(self, ratio, **kwargs):
+        super(SAGPooling, self).__init__(**kwargs)
+        self.ratio = ratio
+
+    def call(self, x, scores):
+        num_nodes = tf.shape(x)[0]
+        num_nodes_to_keep = tf.cast(num_nodes * self.ratio, tf.int32)
+
+        # 根据分数进行排序并选取前 num_nodes_to_keep 个节点
+        _, indices = tf.math.top_k(scores, k=num_nodes_to_keep)
+        x_pool = tf.gather(x, indices)
+
+        return x_pool
+
+    def get_config(self):
+        config = super().get_config().copy()
+        config.update({
+            'ratio': self.ratio,
+        })
+        return config

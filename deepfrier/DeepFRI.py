@@ -2,7 +2,7 @@ import glob
 import tensorflow as tf
 
 from .utils import get_batched_dataset
-from .layers import FuncPredictor, SumPooling
+from .layers import FuncPredictor, SAGPooling
 from .layers import ChebConv, GraphConv, SAGEConv, MultiGraphConv, NoGraphConv, GAT
 
 import warnings
@@ -30,6 +30,7 @@ class DeepFRI(object):
         self.model_name_prefix = model_name_prefix
 
         if lm_model_name is not None:
+            print('modelname',lm_model_name)
             lm_model = tf.keras.models.load_model(lm_model_name)
             lm_model = tf.keras.Model(inputs=lm_model.input,
                                       outputs=tf.keras.layers.Concatenate()([lm_model.get_layer("LSTM1").output, lm_model.get_layer("LSTM2").output]))
@@ -42,28 +43,30 @@ class DeepFRI(object):
 
     def _build_model(self, gc_dims, fc_dims, n_channels, output_dim, lr, drop, l2_reg, gc_layer=None, lm_model=None):
 
-        if gc_layer == 'NoGraphConv':
-            self.GConv = NoGraphConv
-            self.gc_layer = gc_layer
-        elif gc_layer == 'GAT':
-            self.GConv = GAT
-            self.gc_layer = gc_layer
-        elif gc_layer == 'GraphConv':
-            self.GConv = GraphConv
-            self.gc_layer = gc_layer
-        elif gc_layer == 'MultiGraphConv':
-            self.GConv = MultiGraphConv
-            self.gc_layer = gc_layer
-        elif gc_layer == 'SAGEConv':
-            self.GConv = SAGEConv
-            self.gc_layer = gc_layer
-        elif gc_layer == 'ChebConv':
-            self.GConv = ChebConv
-            self.gc_layer = gc_layer
-        else:
-            self.GConv = NoGraphConv
-            self.gc_layer = 'NoGraphConv'
-            warnings.warn('gc_layer not specified! No GraphConv used!')
+        # if gc_layer == 'NoGraphConv':
+        #     self.GConv = NoGraphConv
+        #     self.gc_layer = gc_layer
+        # elif gc_layer == 'GAT':
+        #     self.GConv = GAT
+        #     self.gc_layer = gc_layer
+        # elif gc_layer == 'GraphConv':
+        #     self.GConv = GraphConv
+        #     self.gc_layer = gc_layer
+        # elif gc_layer == 'MultiGraphConv':
+        #     self.GConv = MultiGraphConv
+        #     self.gc_layer = gc_layer
+        # elif gc_layer == 'SAGEConv':
+        #     self.GConv = SAGEConv
+        #     self.gc_layer = gc_layer
+        # elif gc_layer == 'ChebConv':
+        #     self.GConv = ChebConv
+        #     self.gc_layer = gc_layer
+        # else:
+        #     self.GConv = NoGraphConv
+        #     self.gc_layer = 'NoGraphConv'
+        #     warnings.warn('gc_layer not specified! No GraphConv used!')
+        self.gc_layer = gc_layer
+        self.Gconv = GAT
 
         print ("### Compiling DeepFRI model with %s layer..." % (gc_layer))
 
@@ -91,7 +94,8 @@ class DeepFRI(object):
             x = gcnn_concat[-1]
 
         # Sum pooling
-        x = SumPooling(axis=1, name='SumPooling')(x)
+        # x = SumPooling(axis=1, name='SumPooling')(x)
+        x = SAGPooling(ratio=0.5, name='SAGPooling')(x)
 
         # Dense layers
         for l in range(0, len(fc_dims)):

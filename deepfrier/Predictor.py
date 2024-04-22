@@ -10,6 +10,7 @@ import tensorflow as tf
 
 from .utils import load_catalogue, load_FASTA, load_predicted_PDB, seq2onehot
 from .layers import MultiGraphConv, GraphConv, FuncPredictor, SumPooling
+from .pdb_utils import parse_pdb
 
 
 class GradCAM(object):
@@ -105,6 +106,12 @@ class Predictor(object):
         self.test_prot_list = [chain]
         if self.gcn:
             A, S, seqres = self._load_cmap(test_prot, cmap_thresh=cmap_thresh)
+            A = tf.convert_to_tensor(A, dtype='float32')
+            S = tf.convert_to_tensor(S, dtype='float32')
+            print(type(A))
+            # A = tf.cast(A, tf.float32)
+            # print(type(A))
+            # S = tf.cast(S, tf.float32)
 
             y = self.model([A, S], training=False).numpy()[:, :, 0].reshape(-1)
             self.Y_hat[0] = y
