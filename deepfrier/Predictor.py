@@ -9,7 +9,7 @@ import numpy as np
 import tensorflow as tf
 
 from .utils import load_catalogue, load_FASTA, load_predicted_PDB, seq2onehot
-from .layers import MultiGraphConv, GraphConv, FuncPredictor, SumPooling
+from .layers import GAT, GraphConv, FuncPredictor, SumPooling
 from .pdb_utils import parse_pdb
 
 
@@ -58,7 +58,7 @@ class Predictor(object):
 
     def _load_model(self):
         self.model = tf.keras.models.load_model(self.model_prefix + '.hdf5',
-                                                custom_objects={'MultiGraphConv': MultiGraphConv,
+                                                custom_objects={'GAT': GAT,
                                                                 'GraphConv': GraphConv,
                                                                 'FuncPredictor': FuncPredictor,
                                                                 'SumPooling': SumPooling})
