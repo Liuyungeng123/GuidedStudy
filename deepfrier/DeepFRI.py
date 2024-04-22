@@ -43,30 +43,12 @@ class DeepFRI(object):
 
     def _build_model(self, gc_dims, fc_dims, n_channels, output_dim, lr, drop, l2_reg, gc_layer=None, lm_model=None):
 
-        # if gc_layer == 'NoGraphConv':
-        #     self.GConv = NoGraphConv
-        #     self.gc_layer = gc_layer
-        # elif gc_layer == 'GAT':
-        #     self.GConv = GAT
-        #     self.gc_layer = gc_layer
-        # elif gc_layer == 'GraphConv':
-        #     self.GConv = GraphConv
-        #     self.gc_layer = gc_layer
-        # elif gc_layer == 'MultiGraphConv':
-        #     self.GConv = MultiGraphConv
-        #     self.gc_layer = gc_layer
-        # elif gc_layer == 'SAGEConv':
-        #     self.GConv = SAGEConv
-        #     self.gc_layer = gc_layer
-        # elif gc_layer == 'ChebConv':
-        #     self.GConv = ChebConv
-        #     self.gc_layer = gc_layer
-        # else:
-        #     self.GConv = NoGraphConv
-        #     self.gc_layer = 'NoGraphConv'
-        #     warnings.warn('gc_layer not specified! No GraphConv used!')
-        self.gc_layer = gc_layer
-        self.Gconv = GAT
+        if gc_layer == 'GraphConv':
+            self.GConv = GraphConv
+            self.gc_layer = gc_layer
+        elif gc_layer == 'GAT':
+            self.gc_layer = gc_layer
+            self.Gconv = GAT
 
         print ("### Compiling DeepFRI model with %s layer..." % (gc_layer))
 
