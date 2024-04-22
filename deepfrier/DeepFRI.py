@@ -3,7 +3,7 @@ import tensorflow as tf
 
 from .utils import get_batched_dataset
 from .layers import FuncPredictor, SAGPooling
-from .layers import ChebConv, GraphConv, SAGEConv, MultiGraphConv, NoGraphConv, GAT
+from .layers import GraphConv, GAT
 
 import warnings
 import matplotlib.pyplot as plt
