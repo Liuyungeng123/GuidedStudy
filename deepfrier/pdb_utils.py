@@ -329,4 +329,4 @@ def get_init_xyz(xyz_t):
     return xyz
 
 
-parse_pdb('/data/1a2y.pdb')
+# parse_pdb('/data/1a2y.pdb')
