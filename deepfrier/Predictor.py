@@ -72,7 +72,7 @@ class Predictor(object):
 
     def _load_cmap(self, filename, cmap_thresh=10.0):
         if filename.endswith('.pdb'):
-            D, seq = load_predicted_PDB(filename)
+            D, seq, hotspot = load_predicted_PDB(filename)
             A = np.double(D < cmap_thresh)
         elif filename.endswith('.npz'):
             cmap = np.load(filename)
@@ -85,7 +85,7 @@ class Predictor(object):
             rnd_fn = "".join([secrets.token_hex(10), '.pdb'])
             with gzip.open(filename, 'rb') as f, open(rnd_fn, 'w') as out:
                 out.write(f.read().decode())
-            D, seq = load_predicted_PDB(rnd_fn)
+            D, seq, hotspot = load_predicted_PDB(rnd_fn)
             A = np.double(D < cmap_thresh)
             os.remove(rnd_fn)
         else:
